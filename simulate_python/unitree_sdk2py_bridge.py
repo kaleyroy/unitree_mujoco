@@ -168,7 +168,7 @@ class UnitreeSdk2Bridge:
                     self.dim_motor_sensor + 9
                 ]
 
-            if self.joystick != None:
+            if self.joystick != None and hasattr(self, 'button_id') and hasattr(self, 'axis_id'):
                 pygame.event.get()
                 # Buttons
                 self.low_state.wireless_remote[2] = int(
@@ -248,7 +248,7 @@ class UnitreeSdk2Bridge:
         self.high_state_puber.Write(self.high_state)
 
     def PublishWirelessController(self):
-        if self.joystick != None:
+        if self.joystick != None and hasattr(self, 'button_id') and hasattr(self, 'axis_id'):
             pygame.event.get()
             key_state = [0] * 16
             key_state[self.key_map["R1"]] = self.joystick.get_button(
@@ -299,6 +299,7 @@ class UnitreeSdk2Bridge:
         if joystick_count > 0:
             self.joystick = pygame.joystick.Joystick(device_id)
             self.joystick.init()
+            print(f"Gamepad {self.joystick.get_name()} initialized.")
         else:
             print("No gamepad detected.")
             sys.exit()
